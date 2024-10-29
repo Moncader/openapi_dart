@@ -1384,7 +1384,12 @@ class OpenApiLibraryGenerator {
       case APIType.boolean:
         return refer('bool');
       case APIType.array:
-        final type = _toDartType(parent, schema.items!);
+        var type = _toDartType(parent, schema.items!);
+
+        if (schema.items!.isNullable == true) {
+          type = type.asNullable(true);
+        }
+
         return _referType('List', generics: [type]);
       case APIType.object:
         return _schemaReference(parent, schema);
